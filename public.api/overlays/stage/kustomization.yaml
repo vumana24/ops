@@ -38,5 +38,5 @@ patches:
 
 images:
   - name: KUSTOMIZE-DEFINED
-    newName: vernyune/kubelabs_publicapi2
+    newName: vumana24/kubelabs_publicapi2
     newTag: 1.0.0
