@@ -1,0 +1,43 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: public
+
+commonLabels: 
+  app: public-api
+  team: devops
+
+commonAnnotations:
+  note: "This is an production"
+
+resources:
+  - ns.yaml
+  - ../../base
+
+patches:
+  # in-line
+    - target:
+        name: svc-public-api
+        kind: Service
+      patch: |  
+        - op: add
+          path: /spec/type
+          value: ClusterIP
+  # yaml file
+    - target: 
+        name: cm-private-api
+      path: cm-patch.yaml
+    - target: 
+        name: public-api
+        kind: Ingress
+      path: ingress-patch.yaml
+    - target: 
+        name: public-api
+        kind: Deployment
+      path: deploy-merge.yaml
+
+
+images:
+  - name: KUSTOMIZE-DEFINED
+    newName: vumana24/kubelabs_publicapi2
+    newTag: 1.0.0
